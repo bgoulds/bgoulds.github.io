@@ -39,7 +39,7 @@ app.controller("myCtrl", function ($scope, $location, myService) {
   }
 
   $scope.toggleItem = function () {
-    var index = $scope.products.searchByName($scope.detailItem);
+    var index = $scope.searchByName($scope.detailItem);
     if (index >= 0) {
       $scope.buttonLabel = "Add to List";
       $scope.products.splice(index, 1);
@@ -60,7 +60,7 @@ app.controller("myCtrl", function ($scope, $location, myService) {
 
   $scope.searchByName = function (device) {
     for (var i = 0; i < $scope.products.length; i++) {
-      if ($scope.products[i].title = device.title) {
+      if ($scope.products[i].title == device.title) {
         return i;
       }
     }
