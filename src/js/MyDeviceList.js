@@ -1,7 +1,9 @@
 var app = angular.module("MyDeviceList", ["ngRoute"]);
 
 app.service("myService", function () {
-  this.products = [];
+  if (!localStorage.devices)
+    localStorage.devices = JSON.stringify([]);
+  this.products = JSON.parse(localStorage["devices"]);
   this.detailItem;
 })
 
@@ -17,6 +19,7 @@ app.controller("myCtrl", function ($scope, $location, myService) {
       $scope.results = guide.results;
       $scope.showDevices = false;
       $scope.showSearch = true;
+      $scope.showDetail = false;
       $location.url("/Search");
       $scope.$apply();
     });
@@ -24,7 +27,7 @@ app.controller("myCtrl", function ($scope, $location, myService) {
 
   $scope.viewInDetail = function (device) {
 
-    if ($scope.products.indexOf(device) >= 0) {
+    if ($scope.searchByName(device) >= 0) {
       $scope.buttonLabel = "Remove From List";
     } else {
       $scope.buttonLabel = "Add to List";
@@ -36,7 +39,7 @@ app.controller("myCtrl", function ($scope, $location, myService) {
   }
 
   $scope.toggleItem = function () {
-    var index = $scope.products.indexOf($scope.detailItem);
+    var index = $scope.products.searchByName($scope.detailItem);
     if (index >= 0) {
       $scope.buttonLabel = "Add to List";
       $scope.products.splice(index, 1);
@@ -44,6 +47,8 @@ app.controller("myCtrl", function ($scope, $location, myService) {
       $scope.products.push($scope.detailItem);
       $scope.buttonLabel = "Remove from List";
     }
+    localStorage["devices"] = JSON.stringify($scope.products);
+
   }
 
   $scope.viewDevices = function () {
@@ -51,6 +56,15 @@ app.controller("myCtrl", function ($scope, $location, myService) {
     $scope.showDevices = true;
     $scope.results = [];
     $scope.showSearch = false;
+  }
+
+  $scope.searchByName = function (device) {
+    for (var i = 0; i < $scope.products.length; i++) {
+      if ($scope.products[i].title = device.title) {
+        return i;
+      }
+    }
+    return -1;
   }
 
   $scope.returnFromDetail = function () {

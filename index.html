@@ -15,18 +15,26 @@
     <form ng-submit="queryForDevice()">
       <input type="text" name="search" placeholder="Search for a device to add.." ng-model="query">
     </form>
-    <ul ng-show="showDevices">
+    <div ng-show="showDevices">
       <b>My Device List</b>
+
       <div ng-repeat="x in products" ng-click="viewInDetail(x)">
-        <p><img ng-src="{{x.image.standard}}">{{x.display_title}}</p>
+        <div class="card">
+          <img ng-src="{{x.image.standard}}">
+          <div class="container">
+            <h4><b>{{x.display_title}}</b></h4>
+          </div>
+        </div>
       </div>
-    </ul>
+    </div>
     <div ng-show="showDetail">
-      <img ng-src="">
       <ul>
-        <img ng-src="{{detailItem.image.standard}}"> {{detailItem.display_title}}
-        <br> {{detailItem.summary}}
-        <br>
+        <div class="detail">
+          <img ng-src="{{detailItem.image.medium}}" class="detailImage">
+          <div class="container">
+            <h4><b>{{detailItem.display_title}}</b></h4> {{detailItem.summary}}
+          </div>
+        </div>
       </ul>
       <button ng-click="toggleItem()">{{buttonLabel}}</button>
       <button ng-click="returnFromDetail()">Back</button>
@@ -34,7 +42,12 @@
     <ul ng-show="showSearch">
       <b>Search Results</b>
       <div ng-repeat="x in results" ng-click="viewInDetail(x)">
-        <p><img ng-src="{{x.image.standard}}">{{x.display_title}}</p>
+        <div class="card">
+          <img ng-src="{{x.image.standard}}">
+          <div class="container">
+            <h4><b>{{x.display_title}}</b></h4>
+          </div>
+        </div>
       </div>
       <button id="btn" ng-click="viewDevices()">Back to device list</button>
     </ul>
